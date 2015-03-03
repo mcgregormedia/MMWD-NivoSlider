@@ -69,7 +69,6 @@ function mmwd_nivoslider_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'mmwd_nivoslider_scripts' );
 
-
 // Register Slides custom post type
 if ( ! function_exists( 'register_slide_cpt' ) ) {
 	function register_slide_cpt() {
@@ -201,6 +200,8 @@ function mmwd_nivoslider_set_slide_cpt_admin_order( $wp_query ) {
 }
 add_filter('pre_get_posts', 'mmwd_nivoslider_set_slide_cpt_admin_order');
 
+// include options
+require_once( 'mmwd-nivoslider-options.php' );
 
 
 
@@ -221,7 +222,9 @@ function mmwd_nivoslider_show_nivoslider() {
 	);
 	$query = new WP_Query( $args );
 
-	if ( $query->have_posts() ) {	
+	if ( $query->have_posts() ) {
+		
+		$options = get_option('mmwd_nivoslider_plugin_options');
 		?>
 
 		<div class="slider-wrapper">
@@ -260,9 +263,9 @@ function mmwd_nivoslider_show_nivoslider() {
 
 				<div class="nivo-html-caption-content">
 				
-					<h3><?php the_title(); ?></h3>
+					<h3 style="width:100%;color:<?php echo $options['mmwd_nivoslider_title_text_colour']; ?>;background-color:<?php echo $options['mmwd_nivoslider_title_text_background_colour']; ?>;"><?php the_title(); ?></h3>
 
-					<?php the_content(); ?>
+					<span style="color:<?php echo $options['mmwd_nivoslider_content_text_colour']; ?>;background-color:<?php echo $options['mmwd_nivoslider_content_text_background_colour']; ?>;"><?php the_content(); ?></span>
 				
 				</div>
 
@@ -275,10 +278,10 @@ function mmwd_nivoslider_show_nivoslider() {
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
 				jQuery('#slider').nivoSlider({
-					effect: 'fade',
-					animSpeed: 500, // Slide transition speed
-					pauseTime: 6000, // How long each slide will show
-					pauseOnHover: false, // Stop animation while hovering
+					effect: '<?php echo esc_html( $options['mmwd_nivoslider_slider_effect'] ); ?>',
+					animSpeed: <?php echo esc_html( $options['mmwd_nivoslider_slider_animation_speed'] ); ?>, // Slide transition speed
+					pauseTime: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_time'] ); ?>, // How long each slide will show
+					pauseOnHover: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_on_hover'] ); ?>, // Stop animation while hovering
 				});
 			});
 		</script>
