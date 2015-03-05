@@ -60,13 +60,6 @@ function mmwd_nivoslider_admin_plugin_options_init(){
 		'mmwd_nivoslider_text_options'
 	);
 	add_settings_field(
-		'mmwd_nivoslider_title_text_background_colour',
-		'Title text background colour',
-		'mmwd_nivoslider_text_options_setting_title_text_background_colour',
-		'mmwd_nivoslider_plugin_options',
-		'mmwd_nivoslider_text_options'
-	);
-	add_settings_field(
 		'mmwd_nivoslider_content_text_colour',
 		'Content text colour',
 		'mmwd_nivoslider_text_options_setting_content_text_colour',
@@ -74,9 +67,9 @@ function mmwd_nivoslider_admin_plugin_options_init(){
 		'mmwd_nivoslider_text_options'
 	);
 	add_settings_field(
-		'mmwd_nivoslider_content_text_background_colour',
-		'Content text background colour',
-		'mmwd_nivoslider_text_options_setting_content_text_background_colour',
+		'mmwd_nivoslider_background_colour',
+		'Text background colour',
+		'mmwd_nivoslider_text_options_setting_background_colour',
 		'mmwd_nivoslider_plugin_options',
 		'mmwd_nivoslider_text_options'
 	);
@@ -98,7 +91,7 @@ function mmwd_nivoslider_admin_plugin_options_init(){
 	);
 	add_settings_field(
 		'mmwd_nivoslider_slider_animation_speed',
-		'Slider animation speed',
+		'Slider transition speed',
 		'mmwd_nivoslider_slider_options_setting_slider_animation_speed',
 		'mmwd_nivoslider_plugin_options',
 		'mmwd_nivoslider_slider_options'
@@ -132,47 +125,79 @@ function mmwd_nivoslider_slider_options_section_text() {
 // Text options
 function mmwd_nivoslider_text_options_setting_title_text_colour() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_title_text_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_title_text_colour]' type='text' value='{$options['mmwd_nivoslider_title_text_colour']}'>";
-}
-function mmwd_nivoslider_text_options_setting_title_text_background_colour() {
-	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_title_text_background_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_title_text_background_colour]' type='tel' value='{$options['mmwd_nivoslider_title_text_background_colour']}'>";
+	$mmwd_nivoslider_title_text_colour = ( $options['mmwd_nivoslider_title_text_colour'] ) ? esc_html( $options['mmwd_nivoslider_title_text_colour'] ) : "";
+	echo "<input id='mmwd_nivoslider_title_text_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_title_text_colour]' type='text' value='" . $mmwd_nivoslider_title_text_colour . "'> <em>Title font can be changed in your theme's CSS</em>";
 }
 function mmwd_nivoslider_text_options_setting_content_text_colour() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_content_text_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_content_text_colour]' type='tel' value='{$options['mmwd_nivoslider_content_text_colour']}'>";
+	$mmwd_nivoslider_content_text_colour = ( $options['mmwd_nivoslider_content_text_colour'] ) ? esc_html( $options['mmwd_nivoslider_content_text_colour'] ) : "";
+	echo "<input id='mmwd_nivoslider_content_text_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_content_text_colour]' type='text' value='" . $mmwd_nivoslider_content_text_colour . "'> <em>Content font can be changed in your theme's CSS</em>";
 }
-function mmwd_nivoslider_text_options_setting_content_text_background_colour() {
+function mmwd_nivoslider_text_options_setting_background_colour() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_content_text_background_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_content_text_background_colour]' value='{$options['mmwd_nivoslider_content_text_background_colour']}'>";
+	$mmwd_nivoslider_background_colour = ( $options['mmwd_nivoslider_background_colour'] ) ? esc_html( $options['mmwd_nivoslider_background_colour'] ) : "";
+	echo "<input id='mmwd_nivoslider_background_colour' class='wide mmwd-color-picker'name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_background_colour]' type='text' value='" . $mmwd_nivoslider_background_colour . "'>";
 }
 
 
 // Slider options
 function mmwd_nivoslider_slider_options_setting_slider_effect() {
-	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_slider_effect' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_effect]' type='text' value='{$options['mmwd_nivoslider_slider_effect']}'>";
+	$options = get_option('mmwd_nivoslider_plugin_options');	
+	?>
+	<select id='mmwd_nivoslider_slider_effect' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_effect]'>
+		<option value='sliceDown'>Slice down</option>	
+		<option value='sliceDownLeft'>Slice down left</option>	
+		<option value='sliceUp'>Slice up</option>	
+		<option value='sliceUpLeft'>Slice up left</option>	
+		<option value='sliceUpDown'>Slice up down</option>	
+		<option value='sliceUpDownLeft'>Slice up down left</option>	
+		<option value='fold'>Fold</option>	
+		<option value='fade'>Fade</option>	
+		<option value='random'>Random</option>	
+		<option value='slideInRight'>Slide in right</option>	
+		<option value='slideInLeft'>Slide in left</option>	
+		<option value='boxRandom'>Box random</option>	
+		<option value='boxRain'>Box rain</option>	
+		<option value='boxRainReverse'>Box rain reverse</option>	
+		<option value='boxRainGrow'>Box rain grow</option>	
+		<option value='boxRainGrowReverse'>Box rain grow reverse</option>	
+	</select>
+	<script>
+	jQuery(document).ready(function() {
+		jQuery('#mmwd_nivoslider_slider_effect option[value="<?php echo $options['mmwd_nivoslider_slider_effect']; ?>"]').prop('selected','selected');
+	});
+	</script>
+	<?php
 }
 function mmwd_nivoslider_slider_options_setting_slider_animation_speed() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_slider_animation_speed' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_animation_speed]' type='text' value='{$options['mmwd_nivoslider_slider_animation_speed']}'> <em>milliseconds</em>";
+	echo "<input id='mmwd_nivoslider_slider_animation_speed' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_animation_speed]' type='text' value='{$options['mmwd_nivoslider_slider_animation_speed']}'> <em>The length of time (in milliseconds) that the slider takes to move from one slide to the next</em>";
 }
 function mmwd_nivoslider_slider_options_setting_slider_pause_time() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_slider_pause_time' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_pause_time]' type='text' value='{$options['mmwd_nivoslider_slider_pause_time']}'> <em>milliseconds</em>";
+	echo "<input id='mmwd_nivoslider_slider_pause_time' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_pause_time]' type='text' value='{$options['mmwd_nivoslider_slider_pause_time']}'> <em>The length of time (in milliseconds) that the slider shows a single slide for</em>";
 }
 function mmwd_nivoslider_slider_options_setting_slider_pause_on_hover() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
-	echo "<input id='mmwd_nivoslider_slider_pause_on_hover' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_pause_on_hover]' type='text' value='{$options['mmwd_nivoslider_slider_pause_on_hover']}'> <em>true or false</em>";
+	?>
+	<select id='mmwd_nivoslider_slider_pause_on_hover' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_slider_pause_on_hover]'>
+		<option value='true'>Pause on hover</option>	
+		<option value='false'>Don't pause on hover</option>
+	</select> <em>Do you want the slider to remain on the same slide when the user hovers their mouse over the slider?</em>
+	<script>
+	jQuery(document).ready(function() {
+		jQuery('#mmwd_nivoslider_slider_pause_on_hover option[value="<?php echo $options['mmwd_nivoslider_slider_pause_on_hover']; ?>"]').prop('selected','selected');
+	});
+	</script>
+	<?php
 }
 
 // Validate our options
-function mmwd_nivoslider_admin_plugin_options_validate($input) {
+function mmwd_nivoslider_admin_plugin_options_validate( $input ) {
 	// Text options
 	$newinput['mmwd_nivoslider_title_text_colour'] = sanitize_text_field( $input['mmwd_nivoslider_title_text_colour'] );
-	$newinput['mmwd_nivoslider_title_text_background_colour'] = sanitize_text_field( $input['mmwd_nivoslider_title_text_background_colour'] );
 	$newinput['mmwd_nivoslider_content_text_colour'] = sanitize_text_field( $input['mmwd_nivoslider_content_text_colour'] );
-	$newinput['mmwd_nivoslider_content_text_background_colour'] = sanitize_text_field( $input['mmwd_nivoslider_content_text_background_colour'] );
+	$newinput['mmwd_nivoslider_background_colour'] = sanitize_text_field( $input['mmwd_nivoslider_background_colour'] );
 	// Slider options
 	$newinput['mmwd_nivoslider_slider_effect'] = sanitize_text_field( $input['mmwd_nivoslider_slider_effect'] );
 	$newinput['mmwd_nivoslider_slider_animation_speed'] = sanitize_text_field( $input['mmwd_nivoslider_slider_animation_speed'] );

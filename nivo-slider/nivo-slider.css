@@ -63,19 +63,14 @@
 	color:#fff;
 	z-index:8;	
 	overflow: hidden;
-	display: none;
-	background-color: #3b3939;
-	background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHhtbG5zOnhsaW5rPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rJyB3aWR0aD0nNCcgaGVpZ2h0PSc0Jz4KICA8bGluZSB4MT0nMjAlJyB5MT0nMjAlJyB4Mj0nODAlJyB5Mj0nODAlJyBzdHJva2Utd2lkdGg9JzEnIHN0cm9rZT0nIzQ3NDc0NycvPgogIDxsaW5lIHgxPSc4MCUnIHkxPScyMCUnIHgyPScyMCUnIHkyPSc4MCUnIHN0cm9rZS13aWR0aD0nMScgc3Ryb2tlPScjMzMzMzMzJy8+ICAKPC9zdmc+');
 	margin: 0 auto;
 	padding: 10px 5%;
+	height: 100px;
 }
 .nivo-caption .nivo-html-caption-content{
 	float: left;
-	max-width: 70%;
 }
 .nivo-caption h3 {
-	color: #fff;
-	padding: 10px;
 	margin:0;
 	font-size: 1.6em;
 	font-weight: bold;
@@ -83,8 +78,6 @@
 	-moz-box-sizing: none;
 }
 .nivo-caption p {
-	color: #fff;
-	padding: 10px;
 	margin:0;
 	font-size: 1.1em;
 	font-weight: bold;
@@ -97,17 +90,12 @@
 .nivo-html-caption {
     display:none;
 }
-#fp_cta_button{
-	float: right;
-	margin-top: 20px;
-}
 /* Direction nav styles (e.g. Next & Prev) */
 .nivo-directionNav a {
-	/* position:absolute;
+	position:absolute;
 	top:45%;
 	z-index:9;
-	cursor:pointer; */
-	display: none;
+	cursor:pointer;
 }
 .nivo-prevNav {
 	left:0px;
@@ -117,9 +105,8 @@
 }
 /* Control nav styles (e.g. 1,2,3...) */
 .nivo-controlNav {
-	/* text-align:center;
-	padding: 15px 0; */
-	display: none;
+	text-align:center;
+	padding: 15px 0;
 }
 .nivo-controlNav a {
 	cursor:pointer;
@@ -139,15 +126,9 @@
 }
 
 /*  MOBILE */
-@media
-only screen
-and (max-width: 767px) {
+@media only screen and (max-width: 767px) {
 	.nivo-caption .nivo-html-caption-content{
 		float: none;
 		max-width: 100%;
-	}
-	#fp_cta_button{
-		float: none;
-		margin: 20px auto;
 	}
 }

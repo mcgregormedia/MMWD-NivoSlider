@@ -3,7 +3,7 @@
 Plugin Name: MMWD NivoSlider
 Plugin URI: http://www.mcgregormedia.co.uk/mmwd-nivoslider
 Description: Adds a Slide custom post type and a shortcode to display the slider
-Version: 1.0.0
+Version: 1.0.2
 Author: McGregor Media Web Design
 Author URI: http://www.mcgregormedia.co.uk/
 License: GPL2
@@ -100,7 +100,7 @@ if ( ! function_exists( 'register_slide_cpt' ) ) {
 			'labels'              	=> $labels,
 			'supports'            	=> array( 'title', 'editor', 'thumbnail', 'page-attributes', ),
 			'taxonomies'          	=> array( '' ),
-			'hierarchical'        	=> true,
+			'hierarchical'        	=> false,
 			'public'              	=> true,
 			'show_ui'             	=> true,
 			'show_in_menu'        	=> true,
@@ -203,6 +203,17 @@ add_filter('pre_get_posts', 'mmwd_nivoslider_set_slide_cpt_admin_order');
 // include options
 require_once( 'mmwd-nivoslider-options.php' );
 
+// Add settings link on plugin page
+function mmwd_nivoslider_plugin_page_settings_link( $links ) { 
+  $settings_link = '<a href="options-general.php?page=mmwd_nivoslider_options.php">Settings</a>'; 
+  array_unshift( $links, $settings_link ); 
+  return $links; 
+}
+ 
+$plugin = plugin_basename(__FILE__); 
+add_filter('plugin_action_links_' . $plugin, 'mmwd_nivoslider_plugin_page_settings_link' );
+
+
 
 
 
@@ -227,9 +238,9 @@ function mmwd_nivoslider_show_nivoslider() {
 		$options = get_option('mmwd_nivoslider_plugin_options');
 		?>
 
-		<div class="slider-wrapper">
+		<div class="slider-wrapper theme-default">
 
-			<div id="slider" class="nivoSlider default-theme">
+			<div id="slider" class="nivoSlider">
 
 				<?php
 				while ( $query->have_posts() ) {
@@ -251,7 +262,7 @@ function mmwd_nivoslider_show_nivoslider() {
 
 			</div>
 
-		</div>
+		
 		
 			
 		<?php
@@ -263,9 +274,9 @@ function mmwd_nivoslider_show_nivoslider() {
 
 				<div class="nivo-html-caption-content">
 				
-					<h3 style="width:100%;color:<?php echo $options['mmwd_nivoslider_title_text_colour']; ?>;background-color:<?php echo $options['mmwd_nivoslider_title_text_background_colour']; ?>;"><?php the_title(); ?></h3>
+					<h3 style="width:100%;color:<?php echo esc_html( $options['mmwd_nivoslider_title_text_colour'] ); ?>;"><?php the_title(); ?></h3>
 
-					<span style="color:<?php echo $options['mmwd_nivoslider_content_text_colour']; ?>;background-color:<?php echo $options['mmwd_nivoslider_content_text_background_colour']; ?>;"><?php the_content(); ?></span>
+					<span style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?>;"><?php the_content(); ?></span>
 				
 				</div>
 
@@ -275,6 +286,8 @@ function mmwd_nivoslider_show_nivoslider() {
 		}		
 		?>
 		
+		
+		
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
 				jQuery('#slider').nivoSlider({
@@ -283,8 +296,12 @@ function mmwd_nivoslider_show_nivoslider() {
 					pauseTime: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_time'] ); ?>, // How long each slide will show
 					pauseOnHover: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_on_hover'] ); ?>, // Stop animation while hovering
 				});
+				jQuery('.nivo-caption').css('background-color', '<?php echo esc_html( $options['mmwd_nivoslider_background_colour'] ); ?>');
+				/* jQuery('.nivo-controlNav').addClass('theme-default'); */
 			});
 		</script>
+		
+		</div>
 
 		<?php
 	}	
