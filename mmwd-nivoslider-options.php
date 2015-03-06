@@ -11,8 +11,8 @@
 add_action('admin_menu', 'mmwd_nivoslider_plugin_options_page');
 function mmwd_nivoslider_plugin_options_page() {
 	add_options_page(
-		'MMWD NivoSlider Options', 
-		'MMWD NivoSlider Options',
+		'MMWD NivoSlider Settings', 
+		'MMWD NivoSlider Settings',
 		'manage_options',
 		'mmwd_nivoslider_options',
 		'mmwd_nivoslider_plugin_options_show_page'
@@ -23,7 +23,8 @@ function mmwd_nivoslider_plugin_options_page() {
 function mmwd_nivoslider_plugin_options_show_page() {
 ?>
 	<div>
-		<h2>MMWD NivoSlider Options</h2>
+		<h2>MMWD NivoSlider Settings</h2>
+		<p><em>Note: To use the current image library as slides, you will need to use the <a target="_blank" href="https://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails</a> plugin to resize your images.</em></p>
 		<form action="options.php" method="post">
 		<?php settings_fields('mmwd_nivoslider_admin_plugin_options'); ?>
 		<?php do_settings_sections('mmwd_nivoslider_plugin_options'); ?>
