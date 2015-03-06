@@ -3,7 +3,7 @@
 Plugin Name: MMWD NivoSlider
 Plugin URI: http://www.mcgregormedia.co.uk/mmwd-nivoslider
 Description: Adds a Slide custom post type and a shortcode to display the slider
-Version: 1.0.2
+Version: 1.0.3
 Author: McGregor Media Web Design
 Author URI: http://www.mcgregormedia.co.uk/
 License: GPL2
@@ -122,35 +122,50 @@ if ( ! function_exists( 'register_slide_cpt' ) ) {
 }
 
 
-// Customize the Featured Image metabox
+// Change CPT admin text
+function mmwd_nivoslider_change_admin_cpt_text_filter( $translated_text, $untranslated_text, $domain ) {
+	if ( 'slide' == get_post_type() ){
+		//make the changes to the text
+		switch( $untranslated_text ) {
+			case 'Enter title here':
+			$translated_text = __( 'Slide title text','mmwd-nivoslider' );
+			break;        
+		}
+	}
+	return $translated_text;
+}
+add_filter('gettext', 'mmwd_nivoslider_change_admin_cpt_text_filter', 20, 3);
+
+
+// Remove Add Media button
+function mmwd_nivoslider_remove_media_controls() {
+	if ( 'slide' == get_post_type() ){
+		remove_action( 'media_buttons', 'media_buttons' );
+	}
+}
+add_action('admin_head','mmwd_nivoslider_remove_media_controls');
+
+
+// Customise the Featured Image metabox
 function mmwd_nivoslider_remove_slide_featured_image_metabox() {	
-    remove_meta_box( 'postimagediv', 'slide', 'side' );	
+    if ( 'slide' == get_post_type() ){
+		remove_meta_box( 'postimagediv', 'slide', 'side' );
+	}
 }
 function mmwd_nivoslider_custom_slide_featured_image_metabox( $post ) {
-	$thumbnail_id = get_post_meta( $post->ID, '_thumbnail_id', true );	
-	echo "Minimum width: 1280px<br>Minimum height: 300px";
-	echo _wp_post_thumbnail_html( $thumbnail_id, $post->ID );	
+	if ( 'slide' == get_post_type() ){
+		$thumbnail_id = get_post_meta( $post->ID, '_thumbnail_id', true );	
+		echo "Minimum width: 1280px<br>Minimum height: 300px";
+		echo _wp_post_thumbnail_html( $thumbnail_id, $post->ID );
+	}
 }
 function mmwd_nivoslider_add_slide_featured_image_metabox() {	
-	add_meta_box( 'postimagediv', __( 'Slide Image', 'mmwd-nivoslider' ), 'mmwd_nivoslider_custom_slide_featured_image_metabox', 'slide', 'side', 'default' );	
+	if ( 'slide' == get_post_type() ){
+		add_meta_box( 'postimagediv', __( 'Slide Image', 'mmwd-nivoslider' ), 'mmwd_nivoslider_custom_slide_featured_image_metabox', 'slide', 'side', 'default' );	
+	}
 }
 add_action( 'admin_head', 'mmwd_nivoslider_remove_slide_featured_image_metabox' );
 add_action( 'admin_head', 'mmwd_nivoslider_add_slide_featured_image_metabox' );
-
-
-// Change Featured Image link text
-function mmwd_nivoslider_change_slide_featured_image_metabox_link_text( $content ) {
-    if ( 'slide' == $GLOBALS['post_type'] ){
-		return str_replace( __( 'Set featured image' ), __( 'Set Slideshow Image' ), $content );
-	}	
-}
-function change_featuredimage_txt( $translated ) {
-	 $translated = str_ireplace(  'Featured Image',  'Slideshow Image',  $translated );
-	 return $translated;
-}
-add_filter( 'admin_post_thumbnail_html', 'mmwd_nivoslider_change_slide_featured_image_metabox_link_text' );
-add_filter(  'gettext',  'change_featuredimage_txt'  );
-add_filter(  'ngettext',  'change_featuredimage_txt'  );
 
 
 // add columns

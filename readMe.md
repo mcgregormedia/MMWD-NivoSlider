@@ -8,6 +8,9 @@ Use: To display the slider, use shortcode [mmuk-nivoslider].
 
 Changelog
 
+1.0.3 06-03-2015
+FIXED: Featured image metabox text now only being changed in Slide CPT (issue #1).
+
 1.0.2 05-03-2015
 ADDED: select dropdowns for slider effect and slider pause on hover.
 ADDED: Settings link to plugin page 
