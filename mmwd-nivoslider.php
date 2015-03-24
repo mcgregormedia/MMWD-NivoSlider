@@ -56,9 +56,9 @@ if ( ! defined( 'MMWD_NS_PLUGIN_URL' ) )
 
 //Add additional generated image sizes
 add_theme_support( 'post-thumbnails' );	
-add_image_size( 'slide-desktop', 1280, 300, true ); //(cropped)
-add_image_size( 'slide-tablet', 1024, 250, true ); //(cropped)
-add_image_size( 'slide-mobile', 480, 200, true ); //(cropped)
+add_image_size( 'slide-desktop', 1280, 500, true ); //(cropped)
+add_image_size( 'slide-tablet', 1024, 350, true ); //(cropped)
+add_image_size( 'slide-mobile', 480, 275, true ); //(cropped)
 
 
 // Enqueue scripts
@@ -262,13 +262,13 @@ function mmwd_nivoslider_show_nivoslider() {
 					$query->the_post();
 					global $post;
 					if( is_mobile() ){
-						$slider_img_src = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'slide-mobile', false, '' );
+						$slider_img_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'slide-mobile', false, '' );
 					}
 					elseif( is_tablet() ){
-						$slider_img_src = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'slide-tablet', false, '' );
+						$slider_img_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'slide-tablet', false, '' );
 					}
 					else{
-						$slider_img_src = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'slide-desktop', false, '' );
+						$slider_img_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'slide-desktop', false, '' );
 					}
 					?>
 
@@ -279,23 +279,27 @@ function mmwd_nivoslider_show_nivoslider() {
 
 		
 		
-			
+		
 		<?php
 		while ( $query->have_posts() ) {
-			$query->the_post();			
+			$query->the_post();		
 			?>
 
-			<div id="htmlcaption-<?php the_ID(); ?>" class="nivo-html-caption">
+			<?php if( ( '' !== get_the_title() ) && ( '' !== get_the_content() ) ): ?>
+			
+				<div id="htmlcaption-<?php the_ID(); ?>" class="nivo-html-caption">
 
-				<div class="nivo-html-caption-content">
-				
-					<h3 style="width:100%;color:<?php echo esc_html( $options['mmwd_nivoslider_title_text_colour'] ); ?>;"><?php the_title(); ?></h3>
+					<div class="nivo-html-caption-content">
+					
+						<h3 style="width:100%;color:<?php echo esc_html( $options['mmwd_nivoslider_title_text_colour'] ); ?>;"><?php the_title(); ?></h3>
 
-					<span style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?>;"><?php the_content(); ?></span>
-				
+						<span style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?>;"><?php the_content(); ?></span>
+					
+					</div>
+
 				</div>
-
-			</div>
+			
+			<?php endif; ?>
 
 			<?php		
 		}		
@@ -311,8 +315,11 @@ function mmwd_nivoslider_show_nivoslider() {
 					pauseTime: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_time'] ); ?>, // How long each slide will show
 					pauseOnHover: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_on_hover'] ); ?>, // Stop animation while hovering
 				});
-				jQuery('.nivo-caption').css('background-color', '<?php echo esc_html( $options['mmwd_nivoslider_background_colour'] ); ?>');
-				/* jQuery('.nivo-controlNav').addClass('theme-default'); */
+				<?php if( ( '' === get_the_title() ) && ( '' === get_the_content() ) ): ?>
+					jQuery('.nivo-caption').css('background-color', 'transparent');
+				<?php else: ?>
+					jQuery('.nivo-caption').css('background-color', '<?php echo esc_html( $options['mmwd_nivoslider_background_colour'] ); ?>');
+				<?php endif; ?>
 			});
 		</script>
 		

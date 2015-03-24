@@ -4,7 +4,7 @@ A WordPress plugin that adds a Slide custom post type and a shortcode to display
 
 Settings available: Title text colour, content text colour, text background colour, slider transition effect, slider transition speed, slider pause time, pause on hover.
 
-Use: To display the slider, use shortcode [mmuk-nivoslider].
+Use: To display the slider, use shortcode [mmuk-nivoslider]. To use the current image library as slides, you will need to use the Regenerate Thumbnails plugin to resize your images.
 
 Changelog
 
