@@ -137,7 +137,7 @@ function mmwd_nivoslider_text_options_setting_content_text_colour() {
 function mmwd_nivoslider_text_options_setting_background_colour() {
 	$options = get_option('mmwd_nivoslider_plugin_options');
 	$mmwd_nivoslider_background_colour = ( $options['mmwd_nivoslider_background_colour'] ) ? esc_html( $options['mmwd_nivoslider_background_colour'] ) : "";
-	echo "<input id='mmwd_nivoslider_background_colour' class='wide mmwd-color-picker'name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_background_colour]' type='text' value='" . $mmwd_nivoslider_background_colour . "'>";
+	echo "<input id='mmwd_nivoslider_background_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_background_colour]' type='text' value='" . $mmwd_nivoslider_background_colour . "'>";
 }
 
 

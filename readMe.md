@@ -8,6 +8,11 @@ Use: To display the slider, use shortcode [mmuk-nivoslider]. To use the current 
 
 Changelog
 
+1.0.4 08/09/2015
+ADDED: contextual help for Slide custom post type.
+TWEAK: various bug fixes.
+TWEAK: changed author and plugin URLs to https.
+
 1.0.3 06-03-2015
 FIXED: Featured image metabox text now only being changed in Slide CPT (issue #1).
 ADDED: Advises to regenerate thumbnails to use current images.

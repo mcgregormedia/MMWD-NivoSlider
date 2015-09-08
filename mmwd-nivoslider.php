@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: MMWD NivoSlider
-Plugin URI: http://www.mcgregormedia.co.uk/mmwd-nivoslider
+Plugin URI: https://mcgregormedia.co.uk/mmwd-nivoslider
 Description: Adds a Slide custom post type and a shortcode to display the slider. To use the current image library as slides, you will need to use the <a target="_blank" href="https://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails</a> plugin to resize your images.
-Version: 1.0.3
+Version: 1.0.4
 Author: McGregor Media Web Design
-Author URI: http://www.mcgregormedia.co.uk/
+Author URI: https://mcgregormedia.co.uk/
 License: GPL2
 
 MMWD NivoSlider is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ if ( ! defined( 'MMWD_NS_PLUGIN_URL' ) )
 
 //Add additional generated image sizes
 add_theme_support( 'post-thumbnails' );	
-add_image_size( 'slide-desktop', 1280, 500, true ); //(cropped)
+add_image_size( 'slide-desktop', 1200, 500, true ); //(cropped)
 add_image_size( 'slide-tablet', 1024, 350, true ); //(cropped)
 add_image_size( 'slide-mobile', 480, 275, true ); //(cropped)
 
@@ -155,7 +155,7 @@ function mmwd_nivoslider_remove_slide_featured_image_metabox() {
 function mmwd_nivoslider_custom_slide_featured_image_metabox( $post ) {
 	if ( 'slide' == get_post_type() ){
 		$thumbnail_id = get_post_meta( $post->ID, '_thumbnail_id', true );	
-		echo "Minimum width: 1280px<br>Minimum height: 300px";
+		echo "Minimum width: 1200px<br>Minimum height: 300px";
 		echo _wp_post_thumbnail_html( $thumbnail_id, $post->ID );
 	}
 }
@@ -167,14 +167,71 @@ function mmwd_nivoslider_add_slide_featured_image_metabox() {
 add_action( 'admin_head', 'mmwd_nivoslider_remove_slide_featured_image_metabox' );
 add_action( 'admin_head', 'mmwd_nivoslider_add_slide_featured_image_metabox' );
 
+// Add slide details metabox
+function rx_slide_metaboxes() {
+	add_meta_box('slides_info_metabox', 'Slide links', 'rx_slide_info_metabox_code', 'slide', 'normal', 'default');
+}
+add_action( 'add_meta_boxes_slide', 'rx_slide_metaboxes' );
+
+// The slide info metabox
+function rx_slide_info_metabox_code() {
+	global $post;
+	// Noncename needed to verify where the data originated
+	echo '<input type="hidden" name="slidemeta_noncename" id="slidemeta_noncename" value="' .
+	wp_create_nonce( plugin_basename(__FILE__) ) . '">';
+	//Construct the form
+	?>
+	<p>
+		<input type="checkbox" id="slide_active" name="_slide_active" value="1" <?php echo $checked = ( get_post_meta( $post->ID, '_slide_active', true ) == 1 ) ? 'checked="checked"' : ''; ?>> Currently active
+	</p>
+	<p>
+		Slide button text<br>
+		<input type="text" id="slide_button_text" name="_slide_button_text" value="<?php echo esc_html( get_post_meta( $post->ID, '_slide_button_text', true ) ); ?>">
+	</p>
+	<p>
+		Slide button link<br>
+		<input type="url" id="slide_button_link" name="_slide_button_link" value="<?php echo esc_url( get_post_meta( $post->ID, '_slide_button_link', true ) ); ?>">
+	</p>	
+	<?php
+}
+
+// Save the Metabox Data
+function rx_slides_save_meta( $post_id, $post ) {
+	// verify this came from the our screen and with proper authorization,
+	// because save_post can be triggered at other times
+	if ( !wp_verify_nonce( $_POST['slidemeta_noncename'], plugin_basename(__FILE__) )) {
+		return $post->ID;
+	}
+	// Is the user allowed to edit the post or page?
+	if ( !current_user_can( 'edit_post', $post->ID ))
+		return $post->ID;
+	// OK, we're authenticated: we need to find and save the data
+	// We'll put it into an array to make it easier to loop though.
+	$slides_meta['_slide_active'] = sanitize_text_field( $_POST['_slide_active'] );
+	$slides_meta['_slide_button_text'] = sanitize_text_field( $_POST['_slide_button_text'] );
+	$slides_meta['_slide_button_link'] = sanitize_text_field( $_POST['_slide_button_link'] );
+	// Add values of $slides_meta as custom fields
+	foreach ( $slides_meta as $key => $value ) { // Cycle through the $slides_meta array!
+		if( $post->post_type == 'revision' ) return; // Don't store custom data twice
+		$value = implode( ',', ( array )$value ); // If $value is an array, make it a CSV (unlikely)
+		if( get_post_meta($post->ID, $key, FALSE ) ) { // If the custom field already has a value
+			update_post_meta($post->ID, $key, $value);
+		} else { // If the custom field doesn't have a value
+			add_post_meta($post->ID, $key, $value );
+		}
+		if( !$value ) delete_post_meta( $post->ID, $key ); // Delete if blank
+	}
+}
+add_action('save_post', 'rx_slides_save_meta', 1, 2); // save the custom fields
+
 
 // add columns
 function mmwd_nivoslider_slide_posts_columns( $slide_columns ) {	
     $new_columns['cb']  			= '<input type="checkbox">';
 	$new_columns['post_thumbnail']  = 'Image';
+	$new_columns['slide_active']  	= 'Active';
 	$new_columns['menu_order']  	= 'Order';
-	$new_columns['title']  			= 'Title';
-	$new_columns['post_content']  	= 'Content';	
+	$new_columns['title']  			= 'Title';	
     $new_columns['date'] 			= 'Added';
 	$new_columns['author'] 			= 'Added by';
     return $new_columns;	
@@ -185,6 +242,10 @@ add_filter('manage_edit-slide_columns', 'mmwd_nivoslider_slide_posts_columns');
 // populate columns
 function mmwd_nivoslider_slide_posts_columns_content( $column_name, $post_id ) {	
 	global $post;
+	if ($column_name == 'slide_active') {
+		$menu_order = ( get_post_meta( $post->ID, '_slide_active', true ) ) ? '<i class="fa fa-check-square"></i>' : '';
+		echo $menu_order;
+    }
 	if ($column_name == 'menu_order') {
 		$menu_order = $post->menu_order;
 		echo $menu_order;
@@ -228,6 +289,9 @@ function mmwd_nivoslider_plugin_page_settings_link( $links ) {
 $plugin = plugin_basename(__FILE__); 
 add_filter('plugin_action_links_' . $plugin, 'mmwd_nivoslider_plugin_page_settings_link' );
 
+// Include contextual help file
+require MMWD_NS_BASE_DIR . '/contextual-help.php';
+
 
 
 
@@ -245,6 +309,12 @@ function mmwd_nivoslider_show_nivoslider() {
 		'posts_per_archive_page' => '-1',
 		'order'                  => 'ASC',
 		'orderby'                => 'menu_order',
+		'meta_query'             => array(
+			array(
+				'key'       => '_slide_active',
+				'value'     => '1',
+			),
+		),
 	);
 	$query = new WP_Query( $args );
 
@@ -282,7 +352,10 @@ function mmwd_nivoslider_show_nivoslider() {
 		
 		<?php
 		while ( $query->have_posts() ) {
-			$query->the_post();		
+			$query->the_post();
+			global $post;
+			$button_text = esc_html( get_post_meta( $post->ID, '_slide_button_text', true ) );
+			$link_url = esc_url( get_post_meta( $post->ID, '_slide_button_link', true ) );
 			?>
 
 			<?php if( ( '' !== get_the_title() ) && ( '' !== get_the_content() ) ): ?>
@@ -291,9 +364,27 @@ function mmwd_nivoslider_show_nivoslider() {
 
 					<div class="nivo-html-caption-content">
 					
-						<h3 style="width:100%;color:<?php echo esc_html( $options['mmwd_nivoslider_title_text_colour'] ); ?>;"><?php the_title(); ?></h3>
-
-						<span style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?>;"><?php the_content(); ?></span>
+						<?php if( $link_url ){ ?>
+					
+							<a href="<?php echo $link_url; ?>">
+								<h3 style="width:100%;color:<?php echo esc_html( $options['mmwd_nivoslider_title_text_colour'] ); ?>;"><?php the_title(); ?></h3>
+							</a>
+							
+							<div style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?> ;max-width: 80%; float: left;"><?php the_content(); ?></div>
+						
+							<div style="float: right; padding: 0 0 0 10px;">
+								<a class="button" href="<?php echo $link_url; ?>">
+									<?php echo $button_text; ?>
+								</a>
+							</div>
+						
+						<?php }else{ ?>
+						
+							<h3 style="width:100%;color:<?php echo esc_html( $options['mmwd_nivoslider_title_text_colour'] ); ?>;"><?php the_title(); ?></h3>
+							
+							<span style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?>;"><?php the_content(); ?></span>
+						
+						<?php } ?>
 					
 					</div>
 
@@ -315,11 +406,11 @@ function mmwd_nivoslider_show_nivoslider() {
 					pauseTime: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_time'] ); ?>, // How long each slide will show
 					pauseOnHover: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_on_hover'] ); ?>, // Stop animation while hovering
 				});
-				<?php if( ( '' === get_the_title() ) && ( '' === get_the_content() ) ): ?>
+				<?php /* if( ( '' === get_the_title() ) && ( '' === get_the_content() ) ): ?>
 					jQuery('.nivo-caption').css('background-color', 'transparent');
 				<?php else: ?>
 					jQuery('.nivo-caption').css('background-color', '<?php echo esc_html( $options['mmwd_nivoslider_background_colour'] ); ?>');
-				<?php endif; ?>
+				<?php endif; */ ?>
 			});
 		</script>
 		
