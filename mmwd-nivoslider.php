@@ -3,7 +3,7 @@
 Plugin Name: MMWD NivoSlider
 Plugin URI: https://mcgregormedia.co.uk/mmwd-nivoslider
 Description: Adds a Slide custom post type and a shortcode to display the slider. To use the current image library as slides, you will need to use the <a target="_blank" href="https://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails</a> plugin to resize your images.
-Version: 1.0.4
+Version: 1.0.5
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk/
 License: GPL2
