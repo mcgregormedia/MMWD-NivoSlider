@@ -15,7 +15,7 @@ Uses a Slide custom post type and a shortcode to display the slider. Uses Dev7St
 
 Settings available: Title text colour, content text colour, text background colour, text background opacity, slider transition effect, slider transition speed, slider pause time, pause on hover.
 
-Use: To display the slider, use shortcode [mmuk-nivoslider]. To use the current image library as slides, you will need to use the Regenerate Thumbnails plugin to resize your images.
+Use: To display the slider, use shortcode [mmwd-nivoslider]. To use the current image library as slides, you will need to use the Regenerate Thumbnails plugin to resize your images.
 
 == Changelog ==
 1.0.6 06-01-2016

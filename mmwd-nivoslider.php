@@ -2,7 +2,7 @@
 /*
 Plugin Name: MMWD NivoSlider
 Plugin URI: https://mcgregormedia.co.uk/mmwd-nivoslider
-Description: Adds a Slide custom post type and a shortcode to display the slider. To use the current image library as slides, you will need to use the <a target="_blank" href="https://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails</a> plugin to resize your images.
+Description: Adds a Slide custom post type and shortcode [mmwd-nivoslider] to display the slider. To use the current image library as slides, you will need to use the <a target="_blank" href="https://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails</a> plugin to resize your images.
 Version: 1.0.6
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk/
@@ -169,7 +169,7 @@ add_action( 'admin_head', 'mmwd_nivoslider_add_slide_featured_image_metabox' );
 
 // Add slide details metabox
 function rx_slide_metaboxes() {
-	add_meta_box('slides_info_metabox', 'Slide links', 'rx_slide_info_metabox_code', 'slide', 'normal', 'default');
+	add_meta_box('slides_info_metabox', 'Slide options', 'rx_slide_info_metabox_code', 'slide', 'normal', 'default');
 }
 add_action( 'add_meta_boxes_slide', 'rx_slide_metaboxes' );
 
@@ -243,7 +243,7 @@ add_filter('manage_edit-slide_columns', 'mmwd_nivoslider_slide_posts_columns');
 function mmwd_nivoslider_slide_posts_columns_content( $column_name, $post_id ) {	
 	global $post;
 	if ($column_name == 'slide_active') {
-		$menu_order = ( get_post_meta( $post->ID, '_slide_active', true ) ) ? '<i class="fa fa-check-square"></i>' : '';
+		$menu_order = ( get_post_meta( $post->ID, '_slide_active', true ) ) ? 'Active' : '';
 		echo $menu_order;
     }
 	if ($column_name == 'menu_order') {
