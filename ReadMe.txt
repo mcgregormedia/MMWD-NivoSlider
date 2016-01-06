@@ -18,6 +18,9 @@ Settings available: Title text colour, content text colour, text background colo
 Use: To display the slider, use shortcode [mmuk-nivoslider]. To use the current image library as slides, you will need to use the Regenerate Thumbnails plugin to resize your images.
 
 == Changelog ==
+1.0.6 06-01-2016
+ADDED compatibility for mobile admin post list changes in 4.3
+
 1.0.5 06-01-2016
 FIX: .nivo-caption background colour
 ADDED .nivo-caption background opacity setting
