@@ -372,7 +372,7 @@ function mmwd_nivoslider_show_nivoslider() {
 							
 							<div style="color:<?php echo esc_html( $options['mmwd_nivoslider_content_text_colour'] ); ?> ;max-width: 80%; float: left;"><?php the_content(); ?></div>
 						
-							<div style="float: right; padding: 0 0 0 10px;">
+							<div style="float: right;">
 								<a class="button" href="<?php echo $link_url; ?>">
 									<?php echo $button_text; ?>
 								</a>
@@ -406,11 +406,17 @@ function mmwd_nivoslider_show_nivoslider() {
 					pauseTime: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_time'] ); ?>, // How long each slide will show
 					pauseOnHover: <?php echo esc_html( $options['mmwd_nivoslider_slider_pause_on_hover'] ); ?>, // Stop animation while hovering
 				});
-				<?php /* if( ( '' === get_the_title() ) && ( '' === get_the_content() ) ): ?>
+				<?php if( ( '' === get_the_title() ) && ( '' === get_the_content() ) ): ?>
 					jQuery('.nivo-caption').css('background-color', 'transparent');
 				<?php else: ?>
-					jQuery('.nivo-caption').css('background-color', '<?php echo esc_html( $options['mmwd_nivoslider_background_colour'] ); ?>');
-				<?php endif; */ ?>
+					<?php
+					$hex = $options['mmwd_nivoslider_background_colour'];
+					list( $r, $g, $b ) = sscanf( $hex, '#%02x%02x%02x' );
+					$opacity = ( $options['mmwd_nivoslider_background_opacity'] ) ? esc_html( $options['mmwd_nivoslider_background_opacity'] ) : '1';
+					$rgba = 'rgba( ' . $r . ', ' . $g . ', ' . $b . ', ' . $opacity . ' )';
+					?>
+					jQuery('.nivo-caption').css('background-color', '<?php echo $rgba; ?>');
+				<?php endif; ?>
 			});
 		</script>
 		

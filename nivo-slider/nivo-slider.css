@@ -12,12 +12,13 @@
 	position:relative;
 	width:100%;
 	height:auto;
+	max-height: 400px;
 	overflow: hidden;	
 }
 .nivoSlider img {
 	position:absolute;
-	top:0px;
-	left:0px;
+	top:50%;
+	left:50%;
 	max-width: none;
 }
 .nivo-main-image {
@@ -70,11 +71,12 @@
 	padding: 2%;
 	height: auto;
 	width: 100%;
-	background: #000;
-	background: rgba(0, 0, 0, 0.75);
+	/* background: #000;
+	background: rgba(0, 0, 0, 0.75); */
 }
 .nivo-caption .nivo-html-caption-content{
 	float: left;
+	width: 100%;
 }
 .nivo-caption h3 {
 	margin: 0;
@@ -131,6 +133,10 @@
 
 /*  MOBILE */
 @media only screen and (max-width: 767px) {
+	.nivoSlider {
+		max-height: 200px;
+		overflow: hidden;	
+	}
 	.nivo-caption .nivo-html-caption-content{
 		float: none;
 		max-width: 100%;

@@ -1,12 +1,29 @@
-# MMWD-NivoSlider
+=== MMWD NivoSlider ===
+Contributors: McGregor Media Web Design
+Requires at least: 4.0
+Tested up to: 4.4
+Stable tag: 1.0.5
+License: GPL2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A WordPress plugin that adds a Slide custom post type and a shortcode to display the slider. Uses Dev7Studio's Nivo Slider jQuery plugin.
+A WordPress plugin that adds a simple image slider.
 
-Settings available: Title text colour, content text colour, text background colour, slider transition effect, slider transition speed, slider pause time, pause on hover.
+== Description ==
+A WordPress plugin that adds a simple image slider.
+
+Uses a Slide custom post type and a shortcode to display the slider. Uses Dev7Studio\'s Nivo Slider jQuery plugin.
+
+Settings available: Title text colour, content text colour, text background colour, text background opacity, slider transition effect, slider transition speed, slider pause time, pause on hover.
 
 Use: To display the slider, use shortcode [mmuk-nivoslider]. To use the current image library as slides, you will need to use the Regenerate Thumbnails plugin to resize your images.
 
-Changelog
+== Changelog ==
+1.0.5 06-01-2016
+FIX: .nivo-caption background colour
+ADDED .nivo-caption background opacity setting
+ADDED ReadMe.txt
+REMOVED ReadMe.md
+TWEAK: various CSS changes
 
 1.0.4 08/09/2015
 ADDED: contextual help for Slide custom post type.

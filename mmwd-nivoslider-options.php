@@ -74,6 +74,13 @@ function mmwd_nivoslider_admin_plugin_options_init(){
 		'mmwd_nivoslider_plugin_options',
 		'mmwd_nivoslider_text_options'
 	);
+	add_settings_field(
+		'mmwd_nivoslider_background_opacity',
+		'Text background opacity',
+		'mmwd_nivoslider_text_options_setting_background_opacity',
+		'mmwd_nivoslider_plugin_options',
+		'mmwd_nivoslider_text_options'
+	);
 	
 	
 	// Slider options
@@ -139,6 +146,11 @@ function mmwd_nivoslider_text_options_setting_background_colour() {
 	$mmwd_nivoslider_background_colour = ( $options['mmwd_nivoslider_background_colour'] ) ? esc_html( $options['mmwd_nivoslider_background_colour'] ) : "";
 	echo "<input id='mmwd_nivoslider_background_colour' class='wide mmwd-color-picker' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_background_colour]' type='text' value='" . $mmwd_nivoslider_background_colour . "'>";
 }
+function mmwd_nivoslider_text_options_setting_background_opacity() {
+	$options = get_option('mmwd_nivoslider_plugin_options');
+	$mmwd_nivoslider_background_opacity = ( $options['mmwd_nivoslider_background_opacity'] ) ? esc_html( $options['mmwd_nivoslider_background_opacity'] ) : "";
+	echo "<input id='mmwd_nivoslider_background_opacity' class='wide' name='mmwd_nivoslider_plugin_options[mmwd_nivoslider_background_opacity]' type='text' value='" . $mmwd_nivoslider_background_opacity . "'> <em>Enter decimal value between 0 and 1 - for example, 0.5 = 50%</em>";
+}
 
 
 // Slider options
@@ -199,6 +211,7 @@ function mmwd_nivoslider_admin_plugin_options_validate( $input ) {
 	$newinput['mmwd_nivoslider_title_text_colour'] = sanitize_text_field( $input['mmwd_nivoslider_title_text_colour'] );
 	$newinput['mmwd_nivoslider_content_text_colour'] = sanitize_text_field( $input['mmwd_nivoslider_content_text_colour'] );
 	$newinput['mmwd_nivoslider_background_colour'] = sanitize_text_field( $input['mmwd_nivoslider_background_colour'] );
+	$newinput['mmwd_nivoslider_background_opacity'] = sanitize_text_field( $input['mmwd_nivoslider_background_opacity'] );
 	// Slider options
 	$newinput['mmwd_nivoslider_slider_effect'] = sanitize_text_field( $input['mmwd_nivoslider_slider_effect'] );
 	$newinput['mmwd_nivoslider_slider_animation_speed'] = sanitize_text_field( $input['mmwd_nivoslider_slider_animation_speed'] );

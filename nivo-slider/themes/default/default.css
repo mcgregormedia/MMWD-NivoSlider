@@ -11,7 +11,7 @@ Supports Thumbs: true
 .theme-default .nivoSlider {
 	position:relative;
 	background: #D7D7D7 url(loading.gif) no-repeat 50% 50%;
-    margin: 17px 0 10px;
+    margin: 0 0 20px;
 }
 .theme-default .nivoSlider img {
 	position:absolute;
@@ -64,11 +64,10 @@ Supports Thumbs: true
 }
 
 .theme-default .nivo-caption {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: inherit;
 }
 .theme-default .nivo-caption a {
     color:#fff;
-    border-bottom:1px dotted #fff;
 }
 .theme-default .nivo-caption a:hover {
     color:#fff;
